@@ -12,7 +12,6 @@ MON PROGRAMME :
 
 /* Etape 1: Récupérer mon mot */
 
-let wordToSearch = ""
 // D'abord on récup le form
 const form = document.querySelector('#form')
 // Ensuite on écoute le submit
@@ -24,7 +23,7 @@ const watchSubmit = () => {
         // On récupère le mot saisi par l'utilisateur
         const data = new FormData(form);
         // On stocke le mot dans une variable globale
-        wordToSearch =  data.get("search")
+        const wordToSearch =  data.get("search")
         apiCall(wordToSearch)
     })
 }
@@ -88,17 +87,43 @@ const findProp = (array, prop) => {
 }
 
 const renderToHtml = (data) => {
-    console.log(data)
+    // Pour la manipuation des textes
+    // récup mon HTML
+    const title = document.querySelector('.js-card-title')
+    const phonetic = document.querySelector('.js-card-phonetic')
+    // écrire du textContent
+    title.textContent = data.word[0].toUpperCase() + data.word.slice(1)
+    phonetic.textContent = data.phonetic
+
+    // ON va créer dynamiquement les listes de définitions
+    const list = document.querySelector('.js-card-list') 
+    for (let i = 0; i < data.meanings.length; i++) {
+        const meaning = data.meanings[i]
+        const partOfSpeech = meaning.partOfSpeech
+        const definition = meaning.definitions[0].definition
+        console.log(definition)
+
+
+        // On crée les éléments HTML
+        const li = document.createElement('li')
+        li.classList.add('card__meaning')
+
+        const cardPartOfSpeech = document.createElement('p')
+        cardPartOfSpeech.classList.add('card__part-of-speech')
+        cardPartOfSpeech.textContent = partOfSpeech
+
+        const cardDefinition = document.createElement('p')
+        cardDefinition.classList.add('card__definition')
+        cardDefinition.textContent = definition
+
+        li.appendChild(cardPartOfSpeech)
+        li.appendChild(cardDefinition)
+        list.appendChild(li)
+    }
 }
 
 
-/* il faudra afficher du coup : 
-    - .card_title pour le mot 
-    - .card_phonetic pour la phonétique
-    - .card_bloc
-    - .card_part-of-speech pour le type
-    - .card_definition pour la def 
-*/
+
 
 
 // Lancement du programme

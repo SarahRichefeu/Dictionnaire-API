@@ -167,9 +167,6 @@ body {
     display: block;
 }
 
-.card__origin {
-    font-size: 1.5rem;
-}
 
 .card__list {
     display: flex;
