@@ -87,6 +87,9 @@ const findProp = (array, prop) => {
 }
 
 const renderToHtml = (data) => {
+    const card = document.querySelector('.js-card')
+    card.classList.remove('is-visible')
+
     // Pour la manipuation des textes
     // récup mon HTML
     const title = document.querySelector('.js-card-title')
@@ -97,11 +100,11 @@ const renderToHtml = (data) => {
 
     // ON va créer dynamiquement les listes de définitions
     const list = document.querySelector('.js-card-list') 
+    list.innerHTML = ''
     for (let i = 0; i < data.meanings.length; i++) {
         const meaning = data.meanings[i]
         const partOfSpeech = meaning.partOfSpeech
         const definition = meaning.definitions[0].definition
-        console.log(definition)
 
 
         // On crée les éléments HTML
@@ -120,6 +123,29 @@ const renderToHtml = (data) => {
         li.appendChild(cardDefinition)
         list.appendChild(li)
     }
+
+    // Ajout de l'audio
+    const audioButton = document.querySelector('.js-card-button')
+    const audioSound = new Audio(data.audio)
+    console.log(audioSound)
+
+    audioButton.addEventListener('click', () => {
+        try {
+            audioButton.classList.remove('card__player--off')
+            audioButton.classList.add('card__player--on')
+            audioSound.play()
+            console.log(audioSound)
+        }
+        catch {
+            console.log('Audio non disponible')
+        }
+
+    })
+    audioSound.addEventListener('ended', () => {
+        audioButton.classList.remove('card__player--on')
+        audioButton.classList.add('card__player--off')
+
+    })
 }
 
 
